@@ -5,6 +5,8 @@
 
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
+from algosdk.future import transaction
+from algosdk import constants
 
 # creates an account and prints info
 def generate_algorand_keypair():
@@ -13,7 +15,24 @@ def generate_algorand_keypair():
     print("My private key: {}".format(private_key))
     print("My passphrase: {}".format(mnemonic.from_private_key(private_key)))
 
+# creates connection to sandbox testnet node
 def first_transaction_example(private_key, my_address):
     algod_address = "http://localhost:4001"
     algod_token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     algod_client = algod.AlgodClient(algod_token, algod_address)
+
+    account_info = algod_client.account_info(my_address)
+    print("Account balance: {} microAlgos".format(account_info.get('amount')) + "\n")
+
+    # build transaction
+    params = algod_client.suggested_params()
+    # comment out the next two (2) lines to use suggested fees
+    params.flat_fee = True
+    params.fee = constants.MIN_TXN_FEE 
+    receiver = "HZ57J3K46JIJXILONBBZOHX6BKPXEM2VVXNRFSUED6DKFD5ZD24PMJ3MVA"
+    note = "Hello World".encode()
+    amount = 1000000
+    unsigned_txn = transaction.PaymentTxn(my_address, params, receiver, amount, None, note)
+
+    # sign transaction
+    signed_txn = unsigned_txn.sign(private_key)
