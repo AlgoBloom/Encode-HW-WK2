@@ -3,12 +3,18 @@
 # My private key: cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg==
 # My passphrase: comfort anxiety nuclear citizen below airport leisure smooth public major rose worth mother stamp tribe bitter medal cotton wink wealth like wagon aware abandon witness
 
-from algosdk import account, mnemonic
+from algosdk import *
+from algosdk.future.transaction import *
 from algosdk.v2client import algod
 from algosdk.future import transaction
 from algosdk import constants
 import json
 import base64
+
+pk_1 = "cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg=="
+sk_1 = mnemonic.to_private_key("comfort anxiety nuclear citizen below airport leisure smooth public major rose worth mother stamp tribe bitter medal cotton wink wealth like wagon aware abandon witness")
+
+#### ACCOUNT GENERATION ####
 
 # creates an account and prints info
 def generate_algorand_keypair():
@@ -18,11 +24,8 @@ def generate_algorand_keypair():
     new_my_passphrase = format(mnemonic.from_private_key(private_key))
     return[new_my_address, new_my_private_key, new_my_passphrase]
 
-
-generate_algorand_keypair()
-
-# creates connection to sandbox testnet node
-def first_transaction_example(private_key, my_address, new_acct_addr):
+# funds new account
+def fund_new_acct(private_key, my_address, new_acct_addr):
     algod_address = "http://localhost:4001"
     algod_token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     algod_client = algod.AlgodClient(algod_token, algod_address)
@@ -66,5 +69,12 @@ def first_transaction_example(private_key, my_address, new_acct_addr):
     account_info = algod_client.account_info(my_address)
     print("Final Account balance: {} microAlgos".format(account_info.get('amount')) + "\n")
 
-new_my_address, new_my_private_key, new_my_passphrase = generate_algorand_keypair()
-first_transaction_example("cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg==", "BSTDOSCCPYN3AZNRGBX3VO4XBEAH2TKCGKYZPMYIIRNYAFHJZGNASJMOEI", new_my_address)
+# CALLING THE FUNCTIONS #
+### This function creates a new account
+new_my_address, pk_2, new_my_passphrase = generate_algorand_keypair()
+### This function funds the new account with a previously funded testnet account
+fund_new_acct("cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg==", "BSTDOSCCPYN3AZNRGBX3VO4XBEAH2TKCGKYZPMYIIRNYAFHJZGNASJMOEI", new_my_address)
+
+############ Test
+
+
