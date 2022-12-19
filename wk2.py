@@ -13,12 +13,16 @@ import base64
 # creates an account and prints info
 def generate_algorand_keypair():
     private_key, address = account.generate_account()
-    print("My address: {}".format(address))
-    print("My private key: {}".format(private_key))
-    print("My passphrase: {}".format(mnemonic.from_private_key(private_key)))
+    new_my_address = format(address)
+    new_my_private_key = format(private_key)
+    new_my_passphrase = format(mnemonic.from_private_key(private_key))
+    return[new_my_address, new_my_private_key, new_my_passphrase]
+
+
+generate_algorand_keypair()
 
 # creates connection to sandbox testnet node
-def first_transaction_example(private_key, my_address):
+def first_transaction_example(private_key, my_address, new_acct_addr):
     algod_address = "http://localhost:4001"
     algod_token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     algod_client = algod.AlgodClient(algod_token, algod_address)
@@ -31,7 +35,7 @@ def first_transaction_example(private_key, my_address):
     # comment out the next two (2) lines to use suggested fees
     params.flat_fee = True
     params.fee = constants.MIN_TXN_FEE 
-    receiver = "HZ57J3K46JIJXILONBBZOHX6BKPXEM2VVXNRFSUED6DKFD5ZD24PMJ3MVA"
+    receiver = new_acct_addr
     note = "Hello World".encode()
     amount = 1000000
     unsigned_txn = transaction.PaymentTxn(my_address, params, receiver, amount, None, note)
@@ -61,3 +65,6 @@ def first_transaction_example(private_key, my_address):
 
     account_info = algod_client.account_info(my_address)
     print("Final Account balance: {} microAlgos".format(account_info.get('amount')) + "\n")
+
+new_my_address, new_my_private_key, new_my_passphrase = generate_algorand_keypair()
+first_transaction_example("cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg==", "BSTDOSCCPYN3AZNRGBX3VO4XBEAH2TKCGKYZPMYIIRNYAFHJZGNASJMOEI", new_my_address)
