@@ -70,18 +70,21 @@ def fund_new_acct(private_key, my_address, new_acct_addr):
     print("Final Account balance: {} microAlgos".format(account_info.get('amount')) + "\n")
 
 # CALLING THE FUNCTIONS #
-### This function creates a new account
-new_my_address, pk_2, new_my_passphrase = generate_algorand_keypair()
+### This function creates the first new account
+one_my_address, one_my_private_key, one_my_passphrase = generate_algorand_keypair()
 ### This function funds the new account with a previously funded testnet account
-fund_new_acct("cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg==", "BSTDOSCCPYN3AZNRGBX3VO4XBEAH2TKCGKYZPMYIIRNYAFHJZGNASJMOEI", new_my_address)
+fund_new_acct("cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg==", "BSTDOSCCPYN3AZNRGBX3VO4XBEAH2TKCGKYZPMYIIRNYAFHJZGNASJMOEI", one_my_address)
+### This function creates a second new account
+two_my_address, two_my_private_key, two_my_passphrase = generate_algorand_keypair()
+### This function funds the new account with a previously funded testnet account
+fund_new_acct("cYGCLpViChb078xonSF43x/IUQvdFlI0jPeD30DZCwIMpjdIQn4bsGWxMG+6u5cJAH1NQjKxl7MIRFuAFOnJmg==", "BSTDOSCCPYN3AZNRGBX3VO4XBEAH2TKCGKYZPMYIIRNYAFHJZGNASJMOEI", two_my_address)
+
 
 ############ Test ################################################################################################################################################
 
-# Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
-# Change these values with your mnemonics
-mnemonic1 = "PASTE your phrase for account 1"
-mnemonic2 = "PASTE your phrase for account 2"
-mnemonic3 = "PASTE your phrase for account 3"
+mnemonic1 = "comfort anxiety nuclear citizen below airport leisure smooth public major rose worth mother stamp tribe bitter medal cotton wink wealth like wagon aware abandon witness"
+mnemonic2 = one_my_passphrase
+mnemonic3 = two_my_passphrase
 # never use mnemonics in production code, replace for demo purposes only
 
 # For ease of reference, add account public and private keys to
